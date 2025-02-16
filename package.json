@@ -1,9 +1,12 @@
 {
+  "homepage": "https://gsaintskad.github.io/1mvremonline",
   "name": "tailwindtest",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "dev": "vite",
     "twd": "tailwindcss -i ./src/input.css -o ./src/output.css --watch",
     "build": "tsc -b && vite build",
