@@ -14,6 +14,7 @@ const OrdersTable = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [username, setUsername] = useState<string>("boba")
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -45,21 +46,50 @@ const OrdersTable = () => {
 
         fetchOrders();
     }, []);
+    useEffect(() => {
+        //@ts-ignore
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Optional: Expands the Web App to full screen
+
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            setUsername(tg.initDataUnsafe.user.first_name);
+        } else {
+            console.log("User data is not available");
+            setUsername("boba")
+        }
+    }, []);
 
     if (loading) return <p className="text-center text-lg font-medium">Loading orders...</p>;
-    if (error) return <p className="text-center text-red-500">Error: {error}</p>;
+    if (error) return(
+    <div className="flex items-center justify-center h-screen  flex-col">
+        <div className="w-full justify-between flex">
+
+        <h2 className="text-2xl text-blue-600 font-semibold mb-4 text-center">hey, {username})</h2>
+        <button
+            onClick={() => window.location.reload()}
+            className="mb-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        >
+            Refresh Orders
+        </button>
+    </div>
+        <p className="text-center text-red-500">Error: {error}
+    Скорее всего нужно поднять сервер:(</p>
+    </div>);
 
     return (
         <div className="p-6 mx-auto max-w-5xl">
             <h2 className="text-2xl font-semibold mb-4 text-center">Orders List</h2>
 
-            <button
-                onClick={() => window.location.reload()}
-                className="mb-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-            >
-                Refresh Orders
-            </button>
+            <div className="w-full justify-between flex">
 
+                <h2 className="text-2xl text-blue-600 font-semibold mb-4 text-center">hey, {username})</h2>
+                <button
+                    onClick={() => window.location.reload()}
+                    className="mb-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                >
+                    Refresh Orders
+                </button>
+            </div>
             <div className="overflow-x-auto rounded-lg border shadow-md">
                 <table className="w-full border-collapse bg-white">
                     {/* Table Header */}
